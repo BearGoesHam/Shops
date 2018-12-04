@@ -1,5 +1,6 @@
 package me.beargoesham.store.Economy;
 
+import me.beargoesham.store.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -7,10 +8,16 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 
-public class EconCommands implements CommandExecutor {
+import java.util.UUID;
+
+public class EconCommands implements CommandExecutor, Listener {
 
     EconManager manager;
+    Main main;
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if(cmd.getName().equalsIgnoreCase("econ")) {
@@ -34,7 +41,13 @@ public class EconCommands implements CommandExecutor {
                             Player target = Bukkit.getPlayer(args[1]);
                                 int amount = Integer.parseInt(args[2]);
                                 manager.subtractBalance(amount, target);
-
+                                p.sendMessage(ChatColor.RED + "[Economy] " + ChatColor.GOLD + "You took " + amount + " from " + target.getName() + "'s balance.");
+                                target.sendMessage(ChatColor.RED + "[Economy] " + ChatColor.GOLD + p.getName() + " has taken " + amount + " from your balance.");
+                        } else if(args[0].equalsIgnoreCase("reset")) {
+                            Player target = Bukkit.getPlayer(args[0]);
+                            manager.resetBalance(target);
+                            p.sendMessage(ChatColor.RED + "[Economy] " + ChatColor.GOLD + "You have reset " + target.getName() + "'s balance.");
+                            target.sendMessage(ChatColor.RED + "[Economy] " + ChatColor.GOLD + p.getName() + " has reset your balance.");
                         }
                     } else {
                         p.sendMessage(ChatColor.RED + "[Economy] " + ChatColor.GOLD + "Invalid Usage. /econ set|give|take|reset <player> <amount>");
@@ -49,6 +62,17 @@ public class EconCommands implements CommandExecutor {
 
 
         return false;
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent e) {
+        Player p = e.getPlayer();
+        UUID uuid = p.getUniqueId();
+        if(!p.hasPlayedBefore()) {
+            if(!manager.balances.containsKey(uuid)) {
+                manager.balances.put(uuid, main.getConfig().getInt("startingbal"));
+            }
+        }
     }
 
 }
