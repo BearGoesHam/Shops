@@ -25,10 +25,15 @@ public class EconCommands implements CommandExecutor {
                             p.sendMessage(ChatColor.RED + "[Economy] " + ChatColor.GOLD + "You set " + target.getName() + "'s balance to: " + amount);
                             target.sendMessage(ChatColor.RED + "[Economy] " + ChatColor.GOLD + p.getName() + " has set your balance to: " + amount);
                         } else if(args[0].equalsIgnoreCase("add")) {
-                        Player target = Bukkit.getPlayer(args[1]);
-                        int amount = Integer.parseInt(args[2]);
-                        manager.addBalance(amount, target);
-                        p.sendMessage(ChatColor.RED + "[Economy] " + ChatColor.GOLD + "added " + amount + " to " + target.getName() + "'s balance.");
+                                Player target = Bukkit.getPlayer(args[1]);
+                                int amount = Integer.parseInt(args[2]);
+                                manager.addBalance(amount, target);
+                                p.sendMessage(ChatColor.RED + "[Economy] " + ChatColor.GOLD + "added " + amount + " to " + target.getName() + "'s balance.");
+
+                        } else if(args[0].equalsIgnoreCase("take")) {
+                            Player target = Bukkit.getPlayer(args[1]);
+                                int amount = Integer.parseInt(args[2]);
+                                manager.subtractBalance(amount, target);
 
                         }
                     } else {
@@ -38,7 +43,7 @@ public class EconCommands implements CommandExecutor {
                 }
 
             } else {
-
+                System.out.println("You can not use this!");
             }
         }
 

@@ -22,6 +22,13 @@ public class EconManager {
         UUID uuid = player.getUniqueId();
         balances.put(uuid, this.getBalance(player) + amount);
     }
-
+    public void subtractBalance(int amount, Player player) {
+        UUID uuid = player.getUniqueId();
+        balances.put(uuid, this.getBalance(player) - amount);
+    }
+    public void resetBalance(Player player) {
+        UUID uuid = player.getUniqueId();
+        balances.put(uuid, 0);
+    }
 
 }
