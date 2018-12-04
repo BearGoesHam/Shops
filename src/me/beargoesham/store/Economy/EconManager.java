@@ -1,4 +1,4 @@
-package me.beargoesham.store;
+package me.beargoesham.store.Economy;
 
 import org.bukkit.entity.Player;
 
@@ -14,8 +14,13 @@ public class EconManager {
         int bal = balances.get(uuid);
         return bal;
     }
-    public void setBalance(int amount, UUID uuid) {
-
+    public void setBalance(int amount, Player player) {
+        UUID uuid = player.getUniqueId();
+        balances.put(uuid, amount);
+    }
+    public void addBalance(int amount, Player player) {
+        UUID uuid = player.getUniqueId();
+        balances.put(uuid, this.getBalance(player) + amount);
     }
 
 

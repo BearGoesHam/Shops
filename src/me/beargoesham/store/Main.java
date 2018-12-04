@@ -6,7 +6,8 @@ public class Main extends JavaPlugin {
 
 
     public void onEnable() {
-
+        registerCommands();
+        registerListeners();
     }
     public void onDisable() {
 
